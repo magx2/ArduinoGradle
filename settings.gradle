@@ -1,2 +1,4 @@
 rootProject.name = 'plugins'
+include 'plugins:arduino'
+findProject(':plugins:arduino')?.name = 'arduino'
 
