@@ -23,6 +23,7 @@ class PrecompileArduinoTask extends DefaultTask {
 	@TaskAction
 	def precompile() {
 		srcDir.eachFileRecurse(FileType.FILES) { file ->
+			logger.debug(" > Precompiling file: $file.absolutePath")
 			final precompiledFile = FileUtils.createFileInDir(file: file, srcDir: srcDir, destDir: precompiledDir)
 			precompiledFile.createNewFile()
 			precompiledFile.withWriter { writer ->
