@@ -6,7 +6,7 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.TaskAction
 
 abstract class ArduinoTask extends DefaultTask {
-	@Input File arduinoDir = new File(project.arduinoDir as String)
+	@InputDirectory File arduinoDir = new File(project.arduinoDir as String)
 	@InputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
 	@InputDirectory File tmpDir = new File("$project.buildDir/arduino/tmp")
 	@Input File mainArduinoFile // need to be set by user
