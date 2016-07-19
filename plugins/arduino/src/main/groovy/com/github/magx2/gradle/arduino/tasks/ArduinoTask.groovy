@@ -30,14 +30,14 @@ abstract class ArduinoTask extends DefaultTask {
 	 */
 	@Input String mainArduino
 
-	@Input @Nullable String portName
+	@Input @Nullable String portName = null
 	boolean verbose
 	boolean verboseBuild
 	boolean verboseUpload
-	@Input @Nullable String board
+	@Input @Nullable String board = null
 	@Input @Nullable Map<String, String> preferences = [:]
 	boolean savePreferences
-	@Input @Nullable File preferencesFile
+	@Input @Nullable File preferencesFile = null
 
 	@TaskAction
 	@CompileStatic
