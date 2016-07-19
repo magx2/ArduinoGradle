@@ -1,17 +1,16 @@
 package com.github.magx2.gradle
 
 import groovy.io.FileType
-import groovy.transform.CompileStatic
 
 final class FileUtils {
 	private FileUtils() {}
 
-	@CompileStatic
-	static File createFileInDir(Map<String, File> params = [:]) {
+	static File createFileInDir(Map<String, Object> params = [:]) {
+		if (!params.doWithFileName) params.doWithFileName = {fileName -> fileName}
 		final filePath = params.file.absolutePath
 		if (!filePath.startsWith(params.srcDir.absolutePath)) throw new IllegalArgumentException("File [$filePath] is not in srcDir [$params.srcDir.absolutePath]!")
-		final onlyFileNamePath = filePath.replaceAll(params.srcDir.absolutePath.replaceAll('\\\\', "\\\\\\\\"), "")
-		final newFile = (params.destDir.absolutePath + onlyFileNamePath) as File
+		final onlyFileNamePath = filePath.replaceAll(params.srcDir.absolutePath.replaceAll('\\\\', "\\\\\\\\"), "").substring(1)
+		final newFile = (params.destDir.absolutePath + File.separator + params.doWithFileName(onlyFileNamePath)) as File
 		newFile.with {
 			parentFile.mkdirs()
 			createNewFile()

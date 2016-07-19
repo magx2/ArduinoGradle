@@ -41,6 +41,28 @@ class FileUtilsSpec extends Specification {
 		]
 	}
 
+	def "should create file in new dir with changed name"() {
+		given:
+		final srcDir = new File("$BASIC_DIR/src_dir_123")
+		final destDir = new File("$BASIC_DIR/dest_dir_123")
+
+		srcDir.mkdirs()
+		destDir.mkdirs()
+
+		assert srcDir.isDirectory(): "srcDir need to be dir!"
+		assert destDir.isDirectory(): "destDir need to be dir!"
+
+		final file = new File(srcDir, "temp1.txt")
+		file.createNewFile()
+
+		when:
+		final newFile = FileUtils.createFileInDir(file: file, srcDir: srcDir, destDir: destDir, doWithFileName: { fileName -> fileName.reverse()})
+
+		then:
+		newFile.absolutePath.endsWith("$BASIC_DIR${File.separator}dest_dir_123${File.separator}txt.1pmet")
+		newFile.exists()
+	}
+
 	def "should throw exception when file is not in srcDir"() {
 		given:
 		final srcDir = new File("$BASIC_DIR/src_dir_2")
