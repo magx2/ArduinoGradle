@@ -41,6 +41,12 @@ abstract class ArduinoTask extends DefaultTask {
 	boolean savePreferences
 	@Input @Optional @Nullable File preferencesFile
 
+	ArduinoTask() {
+		arduinoDir?.mkdirs()
+		precompiledDir?.mkdirs()
+		tmpDir?.mkdirs()
+	}
+
 	@TaskAction
 	@CompileStatic
 	def runTask() {
