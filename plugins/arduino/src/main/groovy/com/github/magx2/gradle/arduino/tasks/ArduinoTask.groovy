@@ -115,9 +115,8 @@ abstract class ArduinoTask extends DefaultTask {
 	}
 
 	@CompileStatic
-	void addPreference(String key, String value) {
-		logger.debug(" > Putting preference $key=$value")
-		preferences.put(key, value)
+	void putPreference(Map<String, String> map = [:]) {
+		preferences.putAll(map)
 	}
 
 	protected abstract String option()
