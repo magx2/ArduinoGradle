@@ -11,6 +11,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Nullable
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.TaskAction
 
 import java.util.regex.Pattern
@@ -28,7 +29,7 @@ abstract class ArduinoTask extends DefaultTask {
 	 * Path to main sketch file. Should drop "**\/src/main/arduino" prefix.<br>
 	 * Also it need to start with "/" (or "\") and end with ".ino"
 	 */
-	@Input String mainArduino
+	@InputFile String mainArduino
 
 	@Input @Nullable String portName = null
 	boolean verbose
