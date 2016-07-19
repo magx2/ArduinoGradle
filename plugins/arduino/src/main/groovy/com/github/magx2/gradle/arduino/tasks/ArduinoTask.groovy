@@ -1,5 +1,6 @@
 package com.github.magx2.gradle.arduino.tasks
 
+import com.github.magx2.gradle.arduino.NotSetReferenceException
 import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
 import org.gradle.api.DefaultTask
@@ -7,12 +8,17 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.TaskAction
 
+import static com.github.magx2.gradle.OsUtils.windows
+
 @PackageScope
 abstract class ArduinoTask extends DefaultTask {
 	@InputDirectory File arduinoDir = new File(project.arduinoDir as String)
 	@InputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
 	@InputDirectory File tmpDir = new File("$project.buildDir/arduino/tmp")
-	@Input File mainArduinoFile // need to be set by user
+	/**
+	 * Path to main sketch file. Should drop "**\/src/main/arduino/" prefix
+	 */
+	@Input String mainArduino // need to be set by user
 
 	@Input String portName
 	boolean verbose
@@ -24,9 +30,22 @@ abstract class ArduinoTask extends DefaultTask {
 	@Input File preferencesFile
 
 	@TaskAction
+	@CompileStatic
 	def runTask() {
+		if(!precompiledDir) throw new NotSetReferenceException("precompiledDir")
+		if(!mainArduino) throw new NotSetReferenceException("mainArduino")
+
+		final mainArduinoFile = new File(precompiledDir, mainArduino)
+		final cmd = buildCmd(mainArduinoFile)
+
+		logger.debug(" > Running command: ${cmd.join(" ")}")
+	}
+
+	@CompileStatic
+	private List<String> buildCmd(File mainArduinoFile) {
 		final preferencesStrings = preferences.collect { entry -> "$entry.key=$entry.value" }
-		final cmd = [arduinoDir.absolutePath] as List<String>
+		final cmd = [] as List<String>
+		cmd << arduinoExecutable()
 		cmd << option()
 		if (portName) cmd << "--port" << portName
 		if (board) cmd << "--board" << board
@@ -42,7 +61,14 @@ abstract class ArduinoTask extends DefaultTask {
 		if (preferencesFile) cmd << "--preferences-file" << preferencesFile.absolutePath
 		cmd << mainArduinoFile.absolutePath
 
-		logger.debug(" > Running command: ${cmd.join(" ")}")
+		cmd
+	}
+
+	@CompileStatic
+	private String arduinoExecutable() {
+		final exe = "$arduinoDir.absolutePath/arduino${windows ? ".exe" : ""}"
+		logger.debug(" > Arduino executable: $exe")
+		exe
 	}
 
 	@CompileStatic
