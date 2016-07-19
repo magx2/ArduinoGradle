@@ -1,5 +1,6 @@
 package com.github.magx2.gradle.arduino.tasks
 
+import com.github.magx2.gradle.CommandLineUtils
 import com.github.magx2.gradle.CommandUtils
 import com.github.magx2.gradle.FileUtils
 import com.github.magx2.gradle.arduino.CommandErrorException
@@ -11,7 +12,6 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Nullable
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
@@ -62,6 +62,14 @@ abstract class ArduinoTask extends DefaultTask {
 		finalProjectDir.mkdirs()
 
 		FileUtils.copyFromDirs(srcDir: precompiledDir, destDir: finalProjectDir)
+
+		if (!portName) {
+			portName = CommandLineUtils.userInput(
+					title: "Please pass portName",
+					label: [text: "Please pass portName"],
+					button: [text: "OK"]
+			)
+		}
 
 		final mainArduinoFile = new File(finalProjectDir, mainArduino)
 		final cmd = buildCmd(mainArduinoFile)
