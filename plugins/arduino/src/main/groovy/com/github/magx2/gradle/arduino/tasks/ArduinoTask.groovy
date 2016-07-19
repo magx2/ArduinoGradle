@@ -41,7 +41,9 @@ abstract class ArduinoTask extends DefaultTask {
 	@TaskAction
 	@CompileStatic
 	def runTask() {
+		if(!arduinoDir) throw new NotSetReferenceException("arduinoDir")
 		if(!precompiledDir) throw new NotSetReferenceException("precompiledDir")
+		if(!tmpDir) throw new NotSetReferenceException("tmpDir")
 		if(!mainArduino) throw new NotSetReferenceException("mainArduino")
 
 		if(!MAIN_ARDUINO_PATTERN.matcher(mainArduino).matches()) throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino\")")
