@@ -32,11 +32,8 @@ abstract class ArduinoTask extends DefaultTask {
 	 */
 	@Input String mainArduino
 
-	@Input @Optional @Nullable String portName
 	boolean verbose
 	boolean verboseBuild
-	boolean verboseUpload
-	@Input @Optional @Nullable String board
 	@Input @Nullable Map<String, String> preferences = [:]
 	boolean savePreferences
 	@Input @Optional @Nullable File preferencesFile
@@ -62,14 +59,6 @@ abstract class ArduinoTask extends DefaultTask {
 		finalProjectDir.mkdirs()
 
 		FileUtils.copyFromDirs(srcDir: precompiledDir, destDir: finalProjectDir)
-
-		if (!portName) {
-			portName = CommandLineUtils.userInput(
-					title: "Please pass portName",
-					label: [text: "Please pass portName"],
-					button: [text: "OK"]
-			)
-		}
 
 		final mainArduinoFile = new File(finalProjectDir, mainArduino)
 		final cmd = buildCmd(mainArduinoFile)
@@ -101,11 +90,8 @@ abstract class ArduinoTask extends DefaultTask {
 		final cmd = [] as List<String>
 		cmd << arduinoExecutable()
 		cmd << option()
-		if (portName) cmd << "--port" << portName
-		if (board) cmd << "--board" << board
 		if (verbose) cmd << "--verbose"
 		if (verboseBuild) cmd << "--verbose-build"
-		if (verboseUpload) cmd << "--verbose-upload"
 		if (preferences) {
 			preferences
 					.collect { entry -> "$entry.key=$entry.value" }
@@ -113,6 +99,9 @@ abstract class ArduinoTask extends DefaultTask {
 		}
 		if (savePreferences) cmd << "--save-prefs"
 		if (preferencesFile) cmd << "--preferences-file" << preferencesFile.absolutePath
+
+		cmd.addAll(ownCommands())
+
 		cmd << mainArduinoFile.absolutePath
 
 		cmd as String[]
@@ -132,4 +121,7 @@ abstract class ArduinoTask extends DefaultTask {
 	}
 
 	protected abstract String option()
+
+	protected List<String> ownCommands() { [] }
+
 }
