@@ -37,9 +37,9 @@ class PrecompileArduinoTask extends DefaultTask {
 	}
 
 	@CompileStatic
-	void put(String key, Object value) {
+	void put(Map<String, Object> map = [:]) {
 		if(context == null) context = [:]
-		context.put(key, value as String)
+		context.putAll(map.collectEntries {entry -> [(entry.key):entry.value as String]} as Map<String, String>)
 	}
 
 	void setTemplateEngine(TemplateEngine templateEngine) {
