@@ -7,8 +7,6 @@ import freemarker.template.Version
 import groovy.transform.CompileStatic
 
 class FreemarkerTemplateEngine implements TemplateEngine {
-	private static final long serialVersionUID = 1L;
-
 	private final Configuration configuration
 
 	FreemarkerTemplateEngine(Configuration configuration) {

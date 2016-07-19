@@ -6,6 +6,7 @@ import com.github.magx2.gradle.arduino.tasks.templateengines.MoustacheTemplateEn
 import com.github.magx2.gradle.arduino.tasks.templateengines.NoOpTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.TemplateEngine
 import groovy.io.FileType
+import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
@@ -19,7 +20,8 @@ class PrecompileArduinoTask extends DefaultTask {
 
 	@InputDirectory File srcDir = new File("src/main/arduino")
 	@OutputDirectory File precompiledDir = new File("$project.buildDir/arduino/precompiled")
-	@Input TemplateEngine templateEngine = NO_OP_TEMPLATE_ENGINE
+	TemplateEngine templateEngine = NO_OP_TEMPLATE_ENGINE
+	@Input String templateEngineClassName = templateEngine.class.canonicalName
 	@Input Map<String, String> context = [:]
 
 	@TaskAction
@@ -32,5 +34,16 @@ class PrecompileArduinoTask extends DefaultTask {
 				writer.write templateEngine.precompile(file, context)
 			}
 		}
+	}
+
+	@CompileStatic
+	void put(String key, Object value) {
+		if(context == null) context = [:]
+		context.put(key, value as String)
+	}
+
+	void setTemplateEngine(TemplateEngine templateEngine) {
+		this.templateEngine = templateEngine
+		templateEngineClassName = templateEngine.class.canonicalName
 	}
 }

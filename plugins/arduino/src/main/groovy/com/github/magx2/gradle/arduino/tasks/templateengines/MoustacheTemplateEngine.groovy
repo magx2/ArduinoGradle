@@ -4,8 +4,6 @@ import com.github.mustachejava.DefaultMustacheFactory
 import com.github.mustachejava.MustacheFactory
 
 class MoustacheTemplateEngine implements TemplateEngine {
-	private static final long serialVersionUID = 1L;
-
 	final MustacheFactory mustacheFactory = new DefaultMustacheFactory();
 
 	@Override String precompile(String text, Map<String, String> context) {
