@@ -8,6 +8,7 @@ import com.github.magx2.gradle.arduino.NotSetReferenceException
 import groovy.transform.CompileStatic
 import groovy.transform.PackageScope
 import org.gradle.api.DefaultTask
+import org.gradle.api.Nullable
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -29,14 +30,14 @@ abstract class ArduinoTask extends DefaultTask {
 	 */
 	@Input String mainArduino
 
-	@Input String portName
+	@Input @Nullable String portName
 	boolean verbose
 	boolean verboseBuild
 	boolean verboseUpload
-	@Input String board
-	@Input Map<String, String> preferences = [:]
+	@Input @Nullable String board
+	@Input @Nullable Map<String, String> preferences = [:]
 	boolean savePreferences
-	@Input File preferencesFile
+	@Input @Nullable File preferencesFile
 
 	@TaskAction
 	@CompileStatic
