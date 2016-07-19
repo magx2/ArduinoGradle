@@ -61,7 +61,7 @@ abstract class ArduinoTask extends DefaultTask {
 		logger.debug(" > Running command: ${cmd.join(" ")}")
 		def output = CommandUtils.execute(cmd)
 		if (!output.exitValue) {
-			throw new CommandErrorException(output.exitValue, output.text, cmd)
+			throw new CommandErrorException(output.exitValue as int, output.text as String, cmd)
 		}
 	}
 
@@ -77,7 +77,7 @@ abstract class ArduinoTask extends DefaultTask {
 
 	@CompileStatic
 	private String[] buildCmd(File mainArduinoFile) {
-		final cmd = [] as String[]
+		final cmd = [] as List<String>
 		cmd << arduinoExecutable()
 		cmd << option()
 		if (portName) cmd << "--port" << portName
@@ -88,13 +88,13 @@ abstract class ArduinoTask extends DefaultTask {
 		if (preferences) {
 			preferences
 					.collect { entry -> "$entry.key=$entry.value" }
-					.each { pref -> cmd << "--pref" << pref }
+					.each { pref -> cmd << ("--pref" as String) << (pref as String) }
 		}
 		if (savePreferences) cmd << "--save-prefs"
 		if (preferencesFile) cmd << "--preferences-file" << preferencesFile.absolutePath
 		cmd << mainArduinoFile.absolutePath
 
-		cmd
+		cmd as String[]
 	}
 
 	@CompileStatic
