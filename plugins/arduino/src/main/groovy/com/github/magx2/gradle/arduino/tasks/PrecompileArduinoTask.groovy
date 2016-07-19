@@ -1,6 +1,7 @@
 package com.github.magx2.gradle.arduino.tasks
 
 import com.github.magx2.gradle.FileUtils
+import com.github.magx2.gradle.arduino.IllegalArgumentException
 import com.github.magx2.gradle.arduino.tasks.templateengines.FreemarkerTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.MoustacheTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.NoOpTemplateEngine
@@ -13,7 +14,11 @@ import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
+import java.util.regex.Pattern
+
 class PrecompileArduinoTask extends DefaultTask {
+	private static final Pattern MAIN_NAME_PATTERN = Pattern.compile("(.+?\\.ino)(\\..+)?\$")
+
 	public static final TemplateEngine NO_OP_TEMPLATE_ENGINE = new NoOpTemplateEngine()
 	public static final TemplateEngine MOUSTACHE_TEMPLATE_ENGINE = new MoustacheTemplateEngine()
 	public static final TemplateEngine FREEMARKER_TEMPLATE_ENGINE = new FreemarkerTemplateEngine()
@@ -28,7 +33,19 @@ class PrecompileArduinoTask extends DefaultTask {
 	def precompile() {
 		srcDir.eachFileRecurse(FileType.FILES) { file ->
 			logger.debug(" > Precompiling file: $file.absolutePath")
-			final precompiledFile = FileUtils.createFileInDir(file: file, srcDir: srcDir, destDir: precompiledDir)
+			final precompiledFile = FileUtils.createFileInDir(
+					file: file,
+					srcDir: srcDir,
+					destDir: precompiledDir,
+					doWithFileName: { fileName ->
+						final matcher = PrecompileArduinoTask.MAIN_NAME_PATTERN.matcher(fileName)
+						if (matcher.matches()) {
+							matcher.group(1)
+						} else {
+							throw new IllegalArgumentException("Could nor find pattern \"${PrecompileArduinoTask.MAIN_NAME_PATTERN.pattern()}\" in \"$fileName\"!")
+						}
+					}
+			)
 			precompiledFile.createNewFile()
 			precompiledFile.withWriter { writer ->
 				writer.write templateEngine.precompile(file, context)
