@@ -20,7 +20,7 @@ import static com.github.magx2.gradle.OsUtils.windows
 abstract class ArduinoTask extends DefaultTask {
 	private static final Pattern MAIN_ARDUINO_PATTERN = Pattern.compile('[\\\\/]([a-zA-Z0-9]+)\\.ino')
 
-	@InputDirectory File arduinoDir = new File(project.arduinoDir as String)
+	@InputDirectory File arduinoDir = project.arduinoDir ? new File(project.arduinoDir as String) : null
 	@InputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
 	@InputDirectory File tmpDir = new File("$project.buildDir/arduino/tmp")
 	/**
