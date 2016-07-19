@@ -31,7 +31,7 @@ final class CommandLineUtils {
 
 			return pass
 		} catch (Exception ignored) {
-			return System.console().readLine("\nPlease enter key passphrase: ")
+			return System.console().readLine("\n${params.label.text}: ")
 		}
 	}
 }
