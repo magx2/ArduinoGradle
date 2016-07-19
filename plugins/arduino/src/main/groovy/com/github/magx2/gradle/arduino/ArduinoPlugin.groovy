@@ -9,9 +9,12 @@ import org.gradle.api.Project
 class ArduinoPlugin implements Plugin<Project> {
 	@Override
 	void apply(Project project) {
-		project.tasks.create("precompileArduino", PrecompileArduinoTask)
+		final precompileArduino = project.tasks.create("precompileArduino", PrecompileArduinoTask)
 
-		project.tasks.create("uploadArduino", UploadArduinoTask)
-		project.tasks.create("compileArduino", CompileArduinoTask)
+		final uploadArduino = project.tasks.create("uploadArduino", UploadArduinoTask)
+		final compileArduino = project.tasks.create("compileArduino", CompileArduinoTask)
+
+		uploadArduino.dependsOn precompileArduino
+		compileArduino.dependsOn precompileArduino
 	}
 }
