@@ -1,6 +1,7 @@
 package com.github.magx2.gradle.arduino.tasks
 
 import com.github.magx2.gradle.FileUtils
+import com.github.magx2.gradle.arduino.tasks.templateengines.MoustacheTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.TemplateEngine
 import groovy.io.FileType
 import org.gradle.api.DefaultTask
@@ -10,9 +11,11 @@ import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 class PrecompileArduinoTask extends DefaultTask {
+	public static final TemplateEngine MOUSTACHE_TEMPLATE_ENGINE = new MoustacheTemplateEngine()
+
 	@InputDirectory File srcDir = new File("src/main/arduino")
 	@OutputDirectory File precompiledDir = new File("$project.buildDir/arduiono/precompiled")
-	@Input TemplateEngine templateEngine
+	@Input TemplateEngine templateEngine = MOUSTACHE_TEMPLATE_ENGINE
 	@Input Map<String, String> context = [:]
 
 	@TaskAction
