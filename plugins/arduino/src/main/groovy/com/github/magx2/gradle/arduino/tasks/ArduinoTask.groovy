@@ -30,7 +30,7 @@ abstract class ArduinoTask extends DefaultTask {
 	 * Path to main sketch file. Should drop "**\/src/main/arduino" prefix.<br>
 	 * Also it need to start with "/" (or "\") and end with ".ino"
 	 */
-	@InputFile String mainArduino
+	@Input String mainArduino
 
 	@Input @Optional @Nullable String portName
 	boolean verbose
