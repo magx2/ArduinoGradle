@@ -1,5 +1,3 @@
-group 'com.github.magx2.gradle.arduino'
-
 dependencies {
     compile gradleApi()
     compile localGroovy()

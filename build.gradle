@@ -17,7 +17,9 @@ dependencies {
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'groovy'
+	apply plugin: "maven"
 
+	group 'com.github.magx2.gradle'
 	version '1.0.0-SNAPSHOT'
 
 	sourceCompatibility = 1.8
@@ -36,5 +38,11 @@ subprojects {
 project(':plugins:arduino') {
 	dependencies {
 		compile project(':utils')
+	}
+}
+
+install {
+	subprojects.each {
+		dependsOn("${it.path}:install")
 	}
 }
