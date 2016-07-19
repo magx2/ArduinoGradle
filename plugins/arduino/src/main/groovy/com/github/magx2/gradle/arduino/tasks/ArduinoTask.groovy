@@ -42,12 +42,12 @@ abstract class ArduinoTask extends DefaultTask {
 	@TaskAction
 	@CompileStatic
 	def runTask() {
-		if(!arduinoDir) throw new NotSetReferenceException("arduinoDir")
-		if(!precompiledDir) throw new NotSetReferenceException("precompiledDir")
-		if(!tmpDir) throw new NotSetReferenceException("tmpDir")
-		if(!mainArduino) throw new NotSetReferenceException("mainArduino")
+		if (!arduinoDir) throw new NotSetReferenceException("arduinoDir")
+		if (!precompiledDir) throw new NotSetReferenceException("precompiledDir")
+		if (!tmpDir) throw new NotSetReferenceException("tmpDir")
+		if (!mainArduino) throw new NotSetReferenceException("mainArduino")
 
-		if(!MAIN_ARDUINO_PATTERN.matcher(mainArduino).matches()) throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino\")")
+		if (!MAIN_ARDUINO_PATTERN.matcher(mainArduino).matches()) throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino\")")
 
 		final mainArduinoFileName = findMainArduinoFileName();
 		File finalProjectDir = new File(tmpDir, mainArduinoFileName)
@@ -60,7 +60,7 @@ abstract class ArduinoTask extends DefaultTask {
 
 		logger.debug(" > Running command: ${cmd.join(" ")}")
 		def output = CommandUtils.execute(cmd)
-		if(!output.exitValue) {
+		if (!output.exitValue) {
 			throw new CommandErrorException(output.exitValue, output.text, cmd)
 		}
 	}
@@ -68,7 +68,7 @@ abstract class ArduinoTask extends DefaultTask {
 	@CompileStatic
 	String findMainArduinoFileName() {
 		final matcher = MAIN_ARDUINO_PATTERN.matcher(mainArduino)
-		if(matcher.matches()) {
+		if (matcher.matches()) {
 			matcher.group(1)
 		} else {
 			throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino\")")
