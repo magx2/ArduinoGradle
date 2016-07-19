@@ -14,4 +14,8 @@ final class FileUtils {
 		newFile.createNewFile()
 		newFile
 	}
+
+	static void copyFromDirs(params = [:]) {
+
+	}
 }
