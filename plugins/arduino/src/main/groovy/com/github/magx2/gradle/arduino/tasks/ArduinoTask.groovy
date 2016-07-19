@@ -1,10 +1,12 @@
 package com.github.magx2.gradle.arduino.tasks
 
+import groovy.transform.PackageScope
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.TaskAction
 
+@PackageScope
 abstract class ArduinoTask extends DefaultTask {
 	@InputDirectory File arduinoDir = new File(project.arduinoDir as String)
 	@InputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
