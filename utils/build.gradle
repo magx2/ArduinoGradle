@@ -1,2 +1,4 @@
+group 'com.github.magx2.gradle.utils'
+
 dependencies {
 }
