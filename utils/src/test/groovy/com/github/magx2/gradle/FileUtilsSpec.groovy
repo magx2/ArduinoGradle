@@ -58,4 +58,111 @@ class FileUtilsSpec extends Specification {
 		Exception ex = thrown()
 		ex.class == IllegalArgumentException
 	}
+
+	def "should copy files from one dir to another"() {
+		given:
+		final srcDir = "$BASIC_DIR/copy_from_dirs/src" as File
+		final destDir = "$BASIC_DIR/copy_from_dirs/dest" as File
+
+		srcDir.mkdirs()
+		destDir.mkdirs()
+
+		final fileText = "test test test"
+		final file = "file.txt"
+		new File(srcDir, file).with {
+			createNewFile()
+			write(fileText)
+		}
+
+		when:
+		FileUtils.copyFromDirs(srcDir: srcDir, destDir: destDir)
+
+		then:
+		final outputFile = new File(destDir, file)
+		outputFile.exists()
+		outputFile.text == fileText
+	}
+
+	def "should copy files from one dir to another (dir of file is in subfolder)"() {
+		given:
+		final srcDir = "$BASIC_DIR/copy_from_dirs/src" as File
+		final destDir = "$BASIC_DIR/copy_from_dirs/dest" as File
+
+		srcDir.mkdirs()
+		destDir.mkdirs()
+
+		final subDir = "sub"
+		new File(srcDir, subDir).mkdirs()
+
+		final fileText = "test test test"
+		final file = "$subDir/file.txt"
+		new File(srcDir, file).with {
+			createNewFile()
+			write(fileText)
+		}
+
+		when:
+		FileUtils.copyFromDirs(srcDir: srcDir, destDir: destDir)
+
+		then:
+		final outputFile = new File(destDir, file)
+		outputFile.exists()
+		outputFile.text == fileText
+	}
+
+	def "should thr NullPointerException when srcDir is null"() {
+		given:
+		final srcDir = null
+		final destDir = "$BASIC_DIR/copy_from_dirs/dest" as File
+
+		when:
+		FileUtils.copyFromDirs(srcDir: srcDir, destDir: destDir)
+
+		then:
+		Exception ex = thrown()
+		ex.class == NullPointerException
+	}
+
+	def "should thr NullPointerException when destDir is null"() {
+		given:
+		final srcDir = "$BASIC_DIR/copy_from_dirs/src" as File
+		final destDir = null
+
+		when:
+		FileUtils.copyFromDirs(srcDir: srcDir, destDir: destDir)
+
+		then:
+		Exception ex = thrown()
+		ex.class == NullPointerException
+	}
+
+	def "should thr IllegalArgumentException when srcDir does not exist"() {
+		given:
+		final srcDir = "$BASIC_DIR/copy_from_dirs/src_not_exists" as File
+		final destDir = "$BASIC_DIR/copy_from_dirs/dest" as File
+
+		destDir.mkdirs()
+
+		when:
+		FileUtils.copyFromDirs(srcDir: srcDir, destDir: destDir)
+
+		then:
+		Exception ex = thrown()
+		ex.class == IllegalArgumentException
+	}
+
+	def "should thr IllegalArgumentException when destDir does not exist"() {
+		given:
+		final srcDir = "$BASIC_DIR/copy_from_dirs/src" as File
+		final destDir = "$BASIC_DIR/copy_from_dirs/dest_not_exists" as File
+
+		srcDir.mkdirs()
+
+		when:
+		FileUtils.copyFromDirs(srcDir: srcDir, destDir: destDir)
+
+		then:
+		Exception ex = thrown()
+		ex.class == IllegalArgumentException
+	}
 }
