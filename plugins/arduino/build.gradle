@@ -3,4 +3,5 @@ dependencies {
     compile localGroovy()
 
 	compile "com.github.spullara.mustache.java:compiler:0.9.2"
+	compile group: 'org.freemarker', name: 'freemarker', version: '2.3.23'
 }
