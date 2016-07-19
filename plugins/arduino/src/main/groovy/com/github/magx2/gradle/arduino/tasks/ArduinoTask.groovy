@@ -12,6 +12,7 @@ import org.gradle.api.Nullable
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
 import java.util.regex.Pattern
@@ -31,14 +32,14 @@ abstract class ArduinoTask extends DefaultTask {
 	 */
 	@InputFile String mainArduino
 
-	@Input @Nullable String portName = null
+	@Input @Optional @Nullable String portName
 	boolean verbose
 	boolean verboseBuild
 	boolean verboseUpload
-	@Input @Nullable String board = null
+	@Input @Optional @Nullable String board
 	@Input @Nullable Map<String, String> preferences = [:]
 	boolean savePreferences
-	@Input @Nullable File preferencesFile = null
+	@Input @Optional @Nullable File preferencesFile
 
 	@TaskAction
 	@CompileStatic
