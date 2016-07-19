@@ -47,7 +47,7 @@ class FileUtilsSpec extends Specification {
 		srcDir.mkdirs()
 		assert srcDir.isDirectory(): "srcDir need to be dir!"
 
-		final file = new File("not_in_src_folder.txt", "$BASIC_DIR/not_src_dir_2")
+		final file = new File("$BASIC_DIR/not_src_dir_2", "not_in_src_folder.txt")
 		file.mkdirs()
 		file.createNewFile()
 
