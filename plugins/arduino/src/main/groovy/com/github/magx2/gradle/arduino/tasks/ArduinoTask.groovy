@@ -112,7 +112,7 @@ abstract class ArduinoTask extends DefaultTask {
 
 	@CompileStatic
 	private String arduinoExecutable() {
-		final exe = "$arduinoDir.absolutePath/arduino${windows ? ".exe" : ""}"
+		final exe = "$arduinoDir.absolutePath/arduino${windows ? "_debug.exe" : ""}"
 		logger.debug(" > Arduino executable: $exe")
 		exe
 	}
