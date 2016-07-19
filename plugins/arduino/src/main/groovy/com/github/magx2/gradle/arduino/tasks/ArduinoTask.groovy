@@ -77,7 +77,6 @@ abstract class ArduinoTask extends DefaultTask {
 
 	@CompileStatic
 	private String[] buildCmd(File mainArduinoFile) {
-		final preferencesStrings = preferences.collect { entry -> "$entry.key=$entry.value" }
 		final cmd = [] as String[]
 		cmd << arduinoExecutable()
 		cmd << option()
@@ -87,9 +86,9 @@ abstract class ArduinoTask extends DefaultTask {
 		if (verboseBuild) cmd << "--verbose-build"
 		if (verboseUpload) cmd << "--verbose-upload"
 		if (preferences) {
-			preferencesStrings.each { pref ->
-				cmd << "--pref" << pref
-			}
+			preferences
+					.collect { entry -> "$entry.key=$entry.value" }
+					.each { pref -> cmd << "--pref" << pref }
 		}
 		if (savePreferences) cmd << "--save-prefs"
 		if (preferencesFile) cmd << "--preferences-file" << preferencesFile.absolutePath
