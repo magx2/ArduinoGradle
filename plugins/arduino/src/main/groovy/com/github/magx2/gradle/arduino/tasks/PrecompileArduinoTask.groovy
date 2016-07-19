@@ -18,7 +18,7 @@ class PrecompileArduinoTask extends DefaultTask {
 	public static final TemplateEngine FREEMARKER_TEMPLATE_ENGINE = new FreemarkerTemplateEngine()
 
 	@InputDirectory File srcDir = new File("src/main/arduino")
-	@OutputDirectory File precompiledDir = new File("$project.buildDir/arduiono/precompiled")
+	@OutputDirectory File precompiledDir = new File("$project.buildDir/arduino/precompiled")
 	@Input TemplateEngine templateEngine = NO_OP_TEMPLATE_ENGINE
 	@Input Map<String, String> context = [:]
 
