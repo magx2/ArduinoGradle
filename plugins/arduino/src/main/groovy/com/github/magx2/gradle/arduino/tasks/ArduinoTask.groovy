@@ -67,7 +67,12 @@ abstract class ArduinoTask extends DefaultTask {
 		final cmd = buildCmd(mainArduinoFile)
 
 		logger.debug(" > Running command: ${cmd.join(" ")}")
-		def output = CommandUtils.execute(cmd)
+		def output
+		try {
+			output = CommandUtils.execute(cmd)
+		} catch (Exception e) {
+			throw new CommandErrorException(cmd, e)
+		}
 		if (!output.exitValue) {
 			throw new CommandErrorException(output.exitValue as int, output.text as String, cmd)
 		}

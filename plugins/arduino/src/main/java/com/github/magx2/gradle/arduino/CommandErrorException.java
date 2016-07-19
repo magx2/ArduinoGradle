@@ -9,6 +9,9 @@ public class CommandErrorException extends ArduinoPluginException {
         super(format("Command returned exit value \"%s\" and it was not 0!%nOutput: %s%nCmd:%n%s",
                 exitValue, outputText, processCmd(cmd)));
     }
+    public CommandErrorException(String[] cmd, Exception e) {
+        super(format("Command thrown exception %nCmd:%n%s", processCmd(cmd)), e);
+    }
 
     private static String processCmd(String[] cmd) {
         return Stream.of(cmd).reduce("", (acc, i) -> {
