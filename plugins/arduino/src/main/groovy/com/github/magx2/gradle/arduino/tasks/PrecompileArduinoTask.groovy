@@ -1,7 +1,6 @@
 package com.github.magx2.gradle.arduino.tasks
 
 import com.github.magx2.gradle.FileUtils
-import com.github.magx2.gradle.arduino.IllegalArgumentException
 import com.github.magx2.gradle.arduino.tasks.templateengines.FreemarkerTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.MoustacheTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.NoOpTemplateEngine
