@@ -10,6 +10,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Nullable
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
@@ -20,7 +21,7 @@ import static com.github.magx2.gradle.OsUtils.windows
 
 @PackageScope
 abstract class ArduinoTask extends DefaultTask {
-	private static final Pattern MAIN_ARDUINO_PATTERN = Pattern.compile('[\\\\/]([a-zA-Z0-9_-]+)\\.ino')
+	private static final Pattern MAIN_ARDUINO_PATTERN = Pattern.compile('([a-zA-Z0-9_-]+)\\.ino')
 
 	@InputDirectory File arduinoDir = project.arduinoDir ? new File(project.arduinoDir as String) : null
 	@OutputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
@@ -29,7 +30,7 @@ abstract class ArduinoTask extends DefaultTask {
 	 * Path to main sketch file. Should drop "**\/src/main/arduino" prefix.<br>
 	 * Also it need to start with "/" (or "\") and end with ".ino"
 	 */
-	@Input String mainArduino
+	@InputFile File mainArduino
 
 	boolean verbose
 	boolean verboseBuild
@@ -44,6 +45,14 @@ abstract class ArduinoTask extends DefaultTask {
 		tmpDir?.mkdirs()
 	}
 
+	void setMainArduino(String mainArduino) {
+		this.mainArduino = new File("$project.projectDir/src/main/arduino", mainArduino)
+	}
+
+	void setMainArduino(File mainArduino) {
+		this.mainArduino = mainArduino
+	}
+
 	@TaskAction
 	@CompileStatic
 	def runTask() {
@@ -52,7 +61,7 @@ abstract class ArduinoTask extends DefaultTask {
 		if (!tmpDir) throw new NotSetReferenceException("tmpDir")
 		if (!mainArduino) throw new NotSetReferenceException("mainArduino")
 
-		if (!MAIN_ARDUINO_PATTERN.matcher(mainArduino).matches()) throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino\")")
+		if (!MAIN_ARDUINO_PATTERN.matcher(mainArduino.name).matches()) throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino.name\")")
 
 		final mainArduinoFileName = findMainArduinoFileName();
 		File finalProjectDir = new File(tmpDir, mainArduinoFileName)
@@ -60,7 +69,7 @@ abstract class ArduinoTask extends DefaultTask {
 
 		FileUtils.copyFromDirs(srcDir: precompiledDir, destDir: finalProjectDir)
 
-		final mainArduinoFile = new File(finalProjectDir, mainArduino)
+		final mainArduinoFile = new File(finalProjectDir, mainArduino.name)
 		final cmd = buildCmd(mainArduinoFile)
 
 		logger.debug(" > Running command: ${cmd.join(" ")}")
@@ -77,11 +86,11 @@ abstract class ArduinoTask extends DefaultTask {
 
 	@CompileStatic
 	String findMainArduinoFileName() {
-		final matcher = MAIN_ARDUINO_PATTERN.matcher(mainArduino)
+		final matcher = MAIN_ARDUINO_PATTERN.matcher(mainArduino.name)
 		if (matcher.matches()) {
 			matcher.group(1)
 		} else {
-			throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino\")")
+			throw new IllegalArgumentException("!${MAIN_ARDUINO_PATTERN.pattern()}.matches(\"$mainArduino.name\")")
 		}
 	}
 
