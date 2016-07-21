@@ -1,11 +1,7 @@
 package com.github.magx2.gradle.arduino.tasks
 
-import com.github.magx2.gradle.CommandLineUtils
 import com.github.magx2.gradle.CommandUtils
 import com.github.magx2.gradle.FileUtils
-import com.github.magx2.gradle.arduino.CommandErrorException
-import com.github.magx2.gradle.arduino.IllegalArgumentException
-import com.github.magx2.gradle.arduino.NotSetReferenceException
 import com.github.magx2.gradle.utils.exceptions.CommandErrorException
 import com.github.magx2.gradle.utils.exceptions.NotSetReferenceException
 import groovy.transform.CompileStatic
