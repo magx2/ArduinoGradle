@@ -2,6 +2,7 @@ package com.github.magx2.gradle.arduino.tasks
 
 import com.github.magx2.gradle.FileUtils
 import com.github.magx2.gradle.arduino.tasks.templateengines.FreemarkerTemplateEngine
+import com.github.magx2.gradle.arduino.tasks.templateengines.GroovyTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.MoustacheTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.NoOpTemplateEngine
 import com.github.magx2.gradle.arduino.tasks.templateengines.TemplateEngine
@@ -21,6 +22,7 @@ class PrecompileArduinoTask extends DefaultTask {
 	public static final TemplateEngine NO_OP_TEMPLATE_ENGINE = new NoOpTemplateEngine()
 	public static final TemplateEngine MOUSTACHE_TEMPLATE_ENGINE = new MoustacheTemplateEngine()
 	public static final TemplateEngine FREEMARKER_TEMPLATE_ENGINE = new FreemarkerTemplateEngine()
+	public static final TemplateEngine GROOVY_TEMPLATE_ENGINE = new GroovyTemplateEngine()
 
 	@InputDirectory File srcDir = new File("src/main/arduino")
 	@OutputDirectory File precompiledDir = new File("$project.buildDir/arduino/precompiled")
