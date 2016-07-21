@@ -24,7 +24,7 @@ class PrecompileArduinoTask extends DefaultTask {
 	public static final TemplateEngine FREEMARKER_TEMPLATE_ENGINE = new FreemarkerTemplateEngine()
 	public static final TemplateEngine GROOVY_TEMPLATE_ENGINE = new GroovyTemplateEngine()
 
-	@InputDirectory File srcDir = new File("src/main/arduino")
+	@InputDirectory File srcDir = new File("$project.projectDir/src/main/arduino")
 	@OutputDirectory File precompiledDir = new File("$project.buildDir/arduino/precompiled")
 	TemplateEngine templateEngine = NO_OP_TEMPLATE_ENGINE
 	@Input String templateEngineClassName = templateEngine.class.canonicalName
