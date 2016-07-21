@@ -41,6 +41,12 @@ project(':plugins:arduino') {
 	}
 }
 
+project(':plugins:nanopb') {
+	dependencies {
+		compile project(':utils')
+	}
+}
+
 install {
 	subprojects.each {
 		dependsOn("${it.path}:install")
