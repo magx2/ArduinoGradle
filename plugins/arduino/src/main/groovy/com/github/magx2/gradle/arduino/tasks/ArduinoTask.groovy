@@ -15,6 +15,7 @@ import org.gradle.api.Nullable
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
 import java.util.regex.Pattern
@@ -26,8 +27,8 @@ abstract class ArduinoTask extends DefaultTask {
 	private static final Pattern MAIN_ARDUINO_PATTERN = Pattern.compile('[\\\\/]([a-zA-Z0-9]+)\\.ino')
 
 	@InputDirectory File arduinoDir = project.arduinoDir ? new File(project.arduinoDir as String) : null
-	@InputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
-	@InputDirectory File tmpDir = new File("$project.buildDir/arduino/tmp")
+	@OutputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
+	@OutputDirectory File tmpDir = new File("$project.buildDir/arduino/tmp")
 	/**
 	 * Path to main sketch file. Should drop "**\/src/main/arduino" prefix.<br>
 	 * Also it need to start with "/" (or "\") and end with ".ino"
