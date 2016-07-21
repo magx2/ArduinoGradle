@@ -39,9 +39,10 @@ class CompileNanopbTask extends DefaultTask {
 		final cmd = []
 		cmd <<"$nanopbBin.absolutePath/protoc"
 		cmd << "--nanopb_out=$compileDir.absolutePath"
-		cmd << protos.join(" ")
+		cmd.addAll(protos)
 
-		CommandUtils.execute(cmd as String[])
+		final execute = CommandUtils.execute(cmd as String[])
+		logger.info("Nanopb-protoc: $execute.text")
 	}
 
 	@CompileStatic
