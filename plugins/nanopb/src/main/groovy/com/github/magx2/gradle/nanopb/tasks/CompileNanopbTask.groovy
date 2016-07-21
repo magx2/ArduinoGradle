@@ -46,6 +46,7 @@ class CompileNanopbTask extends DefaultTask {
 
 	@CompileStatic
 	private void addProtosFromDefaultPath() {
+		protos = []
 		logger.info("Protos list is empty, searching for protos in \"$defaultProtosDir.absolutePath\"")
 		if (!defaultProtosDir) throw new NotSetReferenceException("defaultProtosDir")
 		defaultProtosDir.eachFileRecurse(FileType.FILES) { file ->
