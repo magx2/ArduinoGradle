@@ -1,7 +1,7 @@
 package com.github.magx2.gradle.nanopb
 
 import com.github.magx2.gradle.nanopb.tasks.CleanNanoPbTask
-import com.github.magx2.gradle.nanopb.tasks.NanoPbCompileTask
+import com.github.magx2.gradle.nanopb.tasks.CompileNanoPbTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -16,7 +16,7 @@ class NanoPbPlugin implements Plugin<Project> {
 			clean.dependsOn cleanArduino
 		}
 
-		final compileNanoPb = project.tasks.create("compileNanoPb", NanoPbCompileTask)
+		final compileNanoPb = project.tasks.create("compileNanoPb", CompileNanoPbTask)
 		compileNanoPb.group = TASKS_GROUP
 	}
 }
