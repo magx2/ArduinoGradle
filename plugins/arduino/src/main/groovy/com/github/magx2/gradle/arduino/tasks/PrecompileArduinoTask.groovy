@@ -41,7 +41,7 @@ class PrecompileArduinoTask extends DefaultTask {
 						if (matcher.matches()) {
 							matcher.group(1)
 						} else {
-							throw new IllegalArgumentException("Could nor find pattern \"${PrecompileArduinoTask.MAIN_NAME_PATTERN.pattern()}\" in \"$fileName\"!")
+							fileName
 						}
 					}
 			)
