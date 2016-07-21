@@ -1,6 +1,7 @@
 package com.github.magx2.gradle.nanopb.tasks
 
 import com.github.magx2.gradle.CommandUtils
+import com.github.magx2.gradle.utils.exceptions.IllegalArgumentException
 import com.github.magx2.gradle.utils.exceptions.NotSetReferenceException
 import groovy.io.FileType
 import groovy.transform.CompileStatic
@@ -11,15 +12,22 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
+import java.util.regex.Pattern
+
 class CompileNanopbTask extends DefaultTask {
-	@OutputDirectory File compileDir
-	@InputDirectory File nanopbBin = project.hasProperty('nanopbBin') ? project.nanopbBin as File : null
-	@Input @Optional List<File> protos
-	File defaultProtosDir = "src/main/proto" as File
+	@OutputDirectory
+	File compileDir
+	@InputDirectory
+	File nanopbBin = project.hasProperty('nanopbBin') ? project.nanopbBin as File : null
+	@Input
+	@Optional
+	List<File> protos
+	String protoFolder = "src/main/proto"
+	File defaultProtosDir = protoFolder as File
 
 	CompileNanopbTask() {
 		final mainDir = project.tasks['cleanNanopb']?.mainDir
-		if(mainDir) {
+		if (mainDir) {
 			compileDir = new File((File) mainDir, "compiled")
 		}
 	}
@@ -30,19 +38,40 @@ class CompileNanopbTask extends DefaultTask {
 		if (!nanopbBin) throw new NotSetReferenceException("nanopbBin")
 		if (!compileDir) throw new NotSetReferenceException("compileDir")
 
-		if(!protos) {
+		if (!protos) {
 			addProtosFromDefaultPath()
 		}
 		if (!protos) throw new NotSetReferenceException("protos")
 
 
 		final cmd = []
-		cmd <<"$nanopbBin.absolutePath/protoc"
+		cmd << "$nanopbBin.absolutePath/protoc"
 		cmd << "--nanopb_out=$compileDir.absolutePath"
-		cmd.addAll(protos)
+		cmd.addAll(prepareImportsForProto() )
+		cmd.addAll(protos.collect(this.&prepareProtoToCmdLine))
 
+
+		logger.debug("cmd: ${cmd.join(" ")}")
 		final execute = CommandUtils.execute(cmd as String[])
 		logger.info("Nanopb-protoc: $execute.text")
+	}
+
+	private List<GString> prepareImportsForProto() {
+		protos
+				.collect { it.parentFile }
+				.collect { it.absolutePath }
+				.collect { "-I$it" }
+	}
+
+	@CompileStatic
+	String prepareProtoToCmdLine(File proto) {
+		final bareProtoPattern = ".*?${protoFolder.replaceAll("\\\\", "/")}.(.+)\$"
+		final matcher = Pattern.compile(bareProtoPattern).matcher(proto.absolutePath.replaceAll("\\\\", "/"))
+		if (matcher.matches()) {
+			matcher.group(0)
+		} else {
+			throw new IllegalArgumentException("$proto.absolutePath do not match \"$bareProtoPattern\"")
+		}
 	}
 
 	@CompileStatic
