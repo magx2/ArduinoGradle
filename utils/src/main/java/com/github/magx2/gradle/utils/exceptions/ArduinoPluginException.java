@@ -1,4 +1,4 @@
-package com.github.magx2.gradle.arduino;
+package com.github.magx2.gradle.utils.exceptions;
 
 import org.gradle.api.GradleException;
 
