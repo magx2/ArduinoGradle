@@ -17,7 +17,7 @@ class FreemarkerTemplateEngine implements TemplateEngine {
 		this(createConfiguration())
 	}
 
-	@Override String precompile(String text, Map<String, String> context) {
+	@Override String precompile(String text, Map<String, Object> context) {
 		Template t = new Template("templateName", new StringReader(text), configuration);
 		Writer out = new StringWriter()
 		t.process(context, out)

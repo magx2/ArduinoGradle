@@ -13,7 +13,7 @@ class GroovyTemplateEngine implements TemplateEngine {
 		this(new GStringTemplateEngine())
 	}
 
-	@Override String precompile(String text, Map<String, String> context) {
+	@Override String precompile(String text, Map<String, Object> context) {
 		engine.createTemplate(text).make(context)
 	}
 }

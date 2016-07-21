@@ -28,7 +28,8 @@ class PrecompileArduinoTask extends DefaultTask {
 	@OutputDirectory File precompiledDir = new File("$project.buildDir/arduino/precompiled")
 	TemplateEngine templateEngine = NO_OP_TEMPLATE_ENGINE
 	@Input String templateEngineClassName = templateEngine.class.canonicalName
-	@Input Map<String, String> context = [:]
+	Map<String, Object> context = [:]
+	@Input Map<String, String> contextHash = [:]
 
 	@TaskAction
 	def precompile() {
@@ -57,7 +58,13 @@ class PrecompileArduinoTask extends DefaultTask {
 	@CompileStatic
 	void put(Map<String, Object> map = [:]) {
 		if(context == null) context = [:]
-		context.putAll(map.collectEntries {entry -> [(entry.key):entry.value as String]} as Map<String, String>)
+		context.putAll(map)
+		contextHash = context.collectEntries { entry -> [(entry.key): entry.value.toString()]} as Map<String, String>
+	}
+
+	void setContext(Map<String, Object> context) {
+		this.context = context
+		contextHash = context?.collectEntries { entry -> [(entry.key): entry.value.toString()]} as Map<String, String>
 	}
 
 	void setTemplateEngine(TemplateEngine templateEngine) {
