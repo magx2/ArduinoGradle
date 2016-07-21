@@ -13,7 +13,7 @@ import org.gradle.api.tasks.TaskAction
 
 class CompileNanoPbTask extends DefaultTask {
 	@OutputDirectory File compileDir
-	@InputDirectory File nanopbBin = project.nanopbBin ? project.nanopbBin as File : null
+	@InputDirectory File nanopbBin = project.hasProperty('nanopbBin') ? project.nanopbBin as File : null
 	@Input @Optional List<File> protos
 	File defaultProtosDir = "src/main/proto" as File
 
