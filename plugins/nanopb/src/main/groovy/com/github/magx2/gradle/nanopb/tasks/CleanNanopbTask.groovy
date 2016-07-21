@@ -3,11 +3,10 @@ package com.github.magx2.gradle.nanopb.tasks
 import com.github.magx2.gradle.utils.exceptions.NotSetReferenceException
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.TaskAction
 
 class CleanNanopbTask extends DefaultTask {
-	@InputDirectory File mainDir = "$project.buildDir/nanopb" as File
+	File mainDir = "$project.buildDir/nanopb" as File
 
 	@CompileStatic
 	@TaskAction
