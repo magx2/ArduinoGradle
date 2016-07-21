@@ -11,14 +11,14 @@ import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 
-class CompileNanoPbTask extends DefaultTask {
+class CompileNanopbTask extends DefaultTask {
 	@OutputDirectory File compileDir
 	@InputDirectory File nanopbBin = project.hasProperty('nanopbBin') ? project.nanopbBin as File : null
 	@Input @Optional List<File> protos
 	File defaultProtosDir = "src/main/proto" as File
 
-	CompileNanoPbTask() {
-		final mainDir = project.tasks['cleanNanoPb']?.mainDir
+	CompileNanopbTask() {
+		final mainDir = project.tasks['cleanNanopb']?.mainDir
 		if(mainDir) {
 			compileDir = new File((File) mainDir, "compiled")
 		}

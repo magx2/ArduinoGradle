@@ -6,7 +6,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.TaskAction
 
-class CleanNanoPbTask extends DefaultTask {
+class CleanNanopbTask extends DefaultTask {
 	@InputDirectory File mainDir = "$project.buildDir/nanopb" as File
 
 	@CompileStatic
