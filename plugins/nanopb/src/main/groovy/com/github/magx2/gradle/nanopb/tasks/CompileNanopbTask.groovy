@@ -55,4 +55,12 @@ class CompileNanopbTask extends DefaultTask {
 			}
 		}
 	}
+
+	void setNanopbBin(File nanopbBin) {
+		this.nanopbBin = nanopbBin
+	}
+
+	void setNanopbBin(String nanopbBin) {
+		setNanopbBin(nanopbBin as File)
+	}
 }
