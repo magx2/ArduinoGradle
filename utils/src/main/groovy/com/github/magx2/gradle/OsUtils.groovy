@@ -11,7 +11,7 @@ final class OsUtils {
 	}
 
 	static Os findOs() {
-		final String osName = (System.properties['os.name'] as String).toLowerCase() ?: ""
+		final String osName = findOsName().toLowerCase() ?: ""
 		if (osName.contains('windows')) {
 			Os.Windows
 		} else if (osName.contains("linux")) {
@@ -19,6 +19,10 @@ final class OsUtils {
 		} else {
 			throw new IllegalStateException("Doesn't know this OS \"$osName\"!")
 		}
+	}
+
+	private static String findOsName() {
+		System.properties['os.name'] as String
 	}
 
 	static boolean isWindows() {
