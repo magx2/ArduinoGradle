@@ -40,6 +40,7 @@ abstract class ArduinoTask extends DefaultTask {
 	@Input @Nullable Map<String, String> preferences = [:]
 	boolean savePreferences
 	@Input @Optional @Nullable File preferencesFile
+	boolean preserveTempFiles
 
 	ArduinoTask() {
 		arduinoDir?.mkdirs()
@@ -102,6 +103,7 @@ abstract class ArduinoTask extends DefaultTask {
 		}
 		if (savePreferences) cmd << "--save-prefs"
 		if (preferencesFile) cmd << "--preferences-file" << preferencesFile.absolutePath
+		if (preserveTempFiles) cmd << "--preserve-temp-files"
 
 		cmd.addAll(ownCommands())
 
