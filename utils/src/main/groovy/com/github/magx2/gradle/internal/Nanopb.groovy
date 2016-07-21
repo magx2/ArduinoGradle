@@ -49,8 +49,8 @@ ${includeProtos(protos).join("\n\n")}
 		final includes = []
 
 		for (String protoName : protos) {
-			includes << "#include <$nanopbDir.absolutePath/src/main/proto/${protoName}.pb.h>\n" +
-					"#include <$nanopbDir.absolutePath/src/main/proto/${protoName}.pb.c>"
+			includes << "#include <$nanopbDir.absolutePath/${protoName}.pb.h>\n" +
+					"#include <$nanopbDir.absolutePath/${protoName}.pb.c>"
 		}
 
 		includes
