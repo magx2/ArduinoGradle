@@ -2,4 +2,6 @@ rootProject.name = 'plugins'
 include 'plugins:arduino'
 findProject(':plugins:arduino')?.name = 'arduino'
 include 'utils'
+include 'plugins:nanopb'
+findProject(':plugins:nanopb')?.name = 'nanopb'
 
