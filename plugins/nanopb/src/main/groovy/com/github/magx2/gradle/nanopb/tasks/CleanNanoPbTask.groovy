@@ -1,5 +1,6 @@
 package com.github.magx2.gradle.nanopb.tasks
 
+import com.github.magx2.gradle.utils.exceptions.NotSetReferenceException
 import groovy.transform.CompileStatic
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.InputDirectory
@@ -11,6 +12,7 @@ class CleanNanoPbTask extends DefaultTask {
 	@CompileStatic
 	@TaskAction
 	def clean() {
-		mainDir.deleteDir()
+		if(!mainDir) throw new NotSetReferenceException("mainDir")
+		if(mainDir.exists()) mainDir.deleteDir()
 	}
 }
