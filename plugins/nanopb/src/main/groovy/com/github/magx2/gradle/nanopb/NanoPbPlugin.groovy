@@ -10,13 +10,20 @@ class NanoPbPlugin implements Plugin<Project> {
 
 	@Override
 	void apply(Project project) {
+		cleanNanoPb(project)
+		compileNanoPb(project)
+	}
+
+	private static void compileNanoPb(Project project) {
+		final compileNanoPb = project.tasks.create("compileNanoPb", CompileNanoPbTask)
+		compileNanoPb.group = TASKS_GROUP
+	}
+
+	private static void cleanNanoPb(Project project) {
 		final cleanArduino = project.tasks.create("cleanNanoPb", CleanNanoPbTask)
 		cleanArduino.group = TASKS_GROUP
 		project.getTasksByName('clean', false)?.each { clean ->
 			clean.dependsOn cleanArduino
 		}
-
-		final compileNanoPb = project.tasks.create("compileNanoPb", CompileNanoPbTask)
-		compileNanoPb.group = TASKS_GROUP
 	}
 }
