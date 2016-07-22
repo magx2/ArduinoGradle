@@ -15,13 +15,9 @@ import org.gradle.api.tasks.TaskAction
 import java.util.regex.Pattern
 
 class CompileNanopbTask extends DefaultTask {
-	@OutputDirectory
-	File compileDir
-	@InputDirectory
-	File nanopbBin = project.hasProperty('nanopbBin') ? project.nanopbBin as File : null
-	@Input
-	@Optional
-	List<File> protos
+	@OutputDirectory File compileDir
+	@InputDirectory File nanopbBin = project.hasProperty('nanopbBin') ? project.nanopbBin as File : null
+	@Input @Optional List<File> protos
 	String protoFolder = "src/main/proto"
 	File defaultProtosDir = protoFolder as File
 
