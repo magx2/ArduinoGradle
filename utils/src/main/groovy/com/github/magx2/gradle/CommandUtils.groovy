@@ -6,7 +6,7 @@ final class CommandUtils {
 	private CommandUtils() {}
 
 	@CompileStatic
-	static Map execute(Closure logger, Closure error, String... cmd) {
+	static int execute(Closure logger, Closure error, String... cmd) {
 		def process = cmd.execute()
 
 		process.in.eachLine { line -> logger line }
@@ -14,9 +14,6 @@ final class CommandUtils {
 		process.out.close()
 
 		process.waitFor()
-		[
-				exitValue: process.exitValue(),
-				text: process.text
-		]
+		process.exitValue()
 	}
 }

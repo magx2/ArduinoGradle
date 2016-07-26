@@ -1,6 +1,7 @@
 package com.github.magx2.gradle.nanopb.tasks
 
 import com.github.magx2.gradle.CommandUtils
+import com.github.magx2.gradle.utils.exceptions.CommandErrorException
 import com.github.magx2.gradle.utils.exceptions.IllegalArgumentException
 import com.github.magx2.gradle.utils.exceptions.NotSetReferenceException
 import groovy.io.FileType
@@ -49,7 +50,9 @@ class CompileNanopbTask extends DefaultTask {
 
 		logger.debug("cmd: ${cmd.join(" ")}")
 		final execute = CommandUtils.execute({ logger.info(it?.toString()) }, { logger.error it?.toString() }, cmd as String[])
-		logger.info("Nanopb-protoc: $execute.text")
+		if (execute) {
+			throw new CommandErrorException(execute, cmd as String[])
+		}
 	}
 
 	private List<GString> prepareImportsForProto() {

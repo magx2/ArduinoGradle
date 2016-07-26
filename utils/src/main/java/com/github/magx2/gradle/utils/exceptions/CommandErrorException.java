@@ -5,9 +5,9 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 
 public class CommandErrorException extends ArduinoPluginException {
-    public CommandErrorException(int exitValue, String outputText, String[] cmd) {
-        super(format("Command returned exit value \"%s\" and it was not 0!%nOutput: %s%nCmd:%n%s",
-                exitValue, outputText, processCmd(cmd)));
+    public CommandErrorException(int exitValue, String[] cmd) {
+        super(format("Command returned exit value \"%s\" and it was not 0!%nCmd:%n%s",
+                exitValue, processCmd(cmd)));
     }
 
     public CommandErrorException(String[] cmd, Exception e) {

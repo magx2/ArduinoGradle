@@ -88,8 +88,8 @@ abstract class ArduinoTask extends DefaultTask {
 		} catch (Exception e) {
 			throw new CommandErrorException(cmd, e)
 		}
-		if (output.exitValue) {
-			throw new CommandErrorException(output.exitValue as int, output.text as String, cmd)
+		if (output) {
+			throw new CommandErrorException(output, cmd)
 		}
 	}
 
