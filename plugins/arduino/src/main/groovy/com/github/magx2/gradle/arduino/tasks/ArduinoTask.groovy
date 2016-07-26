@@ -23,20 +23,29 @@ import static com.github.magx2.gradle.OsUtils.windows
 abstract class ArduinoTask extends DefaultTask {
 	private static final Pattern MAIN_ARDUINO_PATTERN = Pattern.compile('([a-zA-Z0-9_-]+)\\.ino')
 
-	@InputDirectory File arduinoDir = project.arduinoDir ? new File(project.arduinoDir as String) : null
-	@OutputDirectory File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
-	@OutputDirectory File tmpDir = new File("$project.buildDir/arduino/tmp")
+	@InputDirectory
+	File arduinoDir = project.arduinoDir ? new File(project.arduinoDir as String) : null
+	@OutputDirectory
+	File precompiledDir = project.tasks['precompileArduino']?.precompiledDir
+	@OutputDirectory
+	File tmpDir = new File("$project.buildDir/arduino/tmp")
 	/**
 	 * Path to main sketch file. Should drop "**\/src/main/arduino" prefix.<br>
 	 * Also it need to start with "/" (or "\") and end with ".ino"
 	 */
-	@InputFile File mainArduino
+	@InputFile
+	File mainArduino
 
 	boolean verbose
 	boolean verboseBuild
-	@Input @Nullable Map<String, String> preferences = [:]
+	@Input
+	@Nullable
+	Map<String, String> preferences = [:]
 	boolean savePreferences
-	@Input @Optional @Nullable File preferencesFile
+	@Input
+	@Optional
+	@Nullable
+	File preferencesFile
 	boolean preserveTempFiles
 
 	ArduinoTask() {
@@ -75,7 +84,7 @@ abstract class ArduinoTask extends DefaultTask {
 		logger.debug(" > Running command: ${cmd.join(" ")}")
 		def output
 		try {
-			output = CommandUtils.execute(cmd)
+			output = CommandUtils.execute({ logger.info it?.toString() }, { logger.error it?.toString() }, cmd)
 		} catch (Exception e) {
 			throw new CommandErrorException(cmd, e)
 		}

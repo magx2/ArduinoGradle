@@ -48,7 +48,7 @@ class CompileNanopbTask extends DefaultTask {
 
 
 		logger.debug("cmd: ${cmd.join(" ")}")
-		final execute = CommandUtils.execute(cmd as String[])
+		final execute = CommandUtils.execute({ logger.info(it?.toString()) }, { logger.error it?.toString() }, cmd as String[])
 		logger.info("Nanopb-protoc: $execute.text")
 	}
 
