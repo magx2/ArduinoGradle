@@ -12,27 +12,48 @@ class ArduinoSerial {
 		this.debug = debug
 	}
 
+	@CompileStatic
 	String initSerial(int baud = BAUD) {
-		decorateInNotDebugMode("Serial.begin($baud);")
+		decorateInNotDebugMode(["Serial.begin($baud);".toString()])
 	}
 
-	String print(String msg) {
-		decorateInNotDebugMode("Serial.print(\"$msg\");")
+	@CompileStatic
+	String echo(List<String> msgs) {
+		final msg = msgs.collect { "Serial.print($it);".toString() }
+		decorateInNotDebugMode(msg)
 	}
 
-	String println(String msg) {
-		decorateInNotDebugMode("Serial.println(\"$msg\");")
+	@CompileStatic
+	String echoln(List<String> msgs) {
+		final msg = msgs.collect { "Serial.print($it);".toString() }
+		msg.add("Serial.println(\"\");")
+		decorateInNotDebugMode(msg)
 	}
 
+	@CompileStatic
+	String print(String... msgs) { echo(msgs.toList()) }
 
+	@CompileStatic
+	String println(String... msgs) { echoln(msgs.toList()) }
+
+	@CompileStatic
+	String prints(String... msgs) { echo(msgs.collect { "\"$it\"".toString() }) }
+
+	@CompileStatic
+	String printlns(String... msgs) { echoln(msgs.collect { "\"$it\"".toString() }) }
+
+	@CompileStatic
 	String read(String var, String defaultChar = '') {
 		decorateInNotDebugMode("char $var = Serial.read();", "char $var = '$defaultChar'; // debug is ON")
 	}
 
-	private String decorateInNotDebugMode(String text) {
-		decorateInNotDebugMode(text, "// $text // debug is OFF")
+	@CompileStatic
+	private String decorateInNotDebugMode(List<String> text) {
+		final debug = text.collect {"// $it // debug is OFF"}.join("\n")
+		decorateInNotDebugMode(text.join("\n"), debug)
 	}
 
+	@CompileStatic
 	private String decorateInNotDebugMode(String notDebug, String debugS) {
 		if (!debug) {
 			debugS
